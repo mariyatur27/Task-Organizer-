@@ -96,7 +96,9 @@ app.get( '/signup', (req, res) => {
 
  app.get( '/dashboard', (req, res) => {
     res.sendFile("main.html", { root: __dirname });
+ })
 
+ app.get('/data', (req, res) => {
     fs.readFile("tasks.json", "utf8", (err, jsonString) => {
 
         var data = req.body
@@ -109,14 +111,15 @@ app.get( '/signup', (req, res) => {
 
             const modified_data = JSON.parse(jsonString);
             console.log(modified_data);
-            res.modified_data
+            res.json(modified_data)
+            // res.setHeader('Content-Type', 'application/json');
+            // res.send(modified_data)
 
           } catch (err) {
             console.log("Error parsing JSON string:", err);
           }
       });
  })
-
 
 
 app.post('/dashboard', (req, res) => {

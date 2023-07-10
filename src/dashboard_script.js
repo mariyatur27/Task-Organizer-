@@ -1,19 +1,41 @@
-const { response } = require("express");
+const buildStartingPage = (id, data) => {
+    var id = String(Number(id) + 1);
+    var container = document.getElementById('tasks-container-onload'); 
+
+    let task_container = document.createElement('div'); task_container.classList.add('tasks-container'); task_container.id = "task-container-".concat(id);
+
+        let task_name = document.createElement('input'); task_name.type = 'text'; task_name.id = "task-name-".concat(id); task_name.value = data[0];
+        task_container.appendChild(task_name); task_name.setAttribute('placeholder', 'Task name...')
+
+        let task_description = document.createElement('input'); task_description.type = 'text'; task_description.id = "task-dscr-".concat(id); task_description.value = data[1]
+        task_container.appendChild(task_description); task_description.setAttribute('placeholder', 'Task description...')
+
+        let task_deadline = document.createElement('input'); task_deadline.type = 'date'; task_deadline.id = 'task-deadline-'.concat(id); task_deadline.value = data[2]
+        task_container.appendChild(task_deadline);
+
+        let add_btn = document.createElement('button'); add_btn.innerHTML = 'Add'; add_btn.id = 'add-btn-'.concat(id);
+        task_container.appendChild(add_btn);
+
+    container.appendChild(task_container);
+
+    activateButton(id);
+}
+
+const sortData = (data) => {
+    var values = Object.values(data);
+    var keys = Object.keys(data)
+
+    for (var i = 0; i < keys.length; i++) {
+        buildStartingPage(keys[i], values[i])
+    }
+    
+}
+
 
 window.onload = (e) => {
-    //read the json file and load everything that is in it everytime the page is reloaded
-    // fetch('http://localhost:8000/dashboard', {
-    //     headers : { 
-    //       'Content-Type': 'application/json',
-    //       'Accept': 'application/json'
-    //      }
-    //   })
-    // .then(response => response.json())
-    // .then(data => console.log(data))
-
-    fetch('http://localhost:8000/dashboard')
-    // .then(response => response.json())
-    .then(response => console.log(response))
+    fetch('http://localhost:8000/data')
+    .then(response => response.json())
+    .then(data => sortData(data))
 }
 
 const sendData = (id, name, dscr, deadline) => {
