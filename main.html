@@ -1,0 +1,48 @@
+<!-- Dashboard Page -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Organizer</title>
+    <link href="static/styles.css" rel="stylesheet"/>
+    <script src='https://cdn.plot.ly/plotly-2.24.1.min.js'></script>
+</head>
+<body>
+    <section id="status-counter">
+        <div class="status-container">
+            <h4>Tasks Not Completed</h4>
+            <span id="incomplete-status">0</span><br>
+            <span id="incomlete-per">0</span>%
+        </div>
+        <div class="status-container">
+            <h4>Tasks In Progress</h4>
+            <span id="inprogress-status">0</span><br>
+            <span id="inprogress-per">0</span>%
+        </div>
+        <div class="status-container">
+            <h4>Tasks Completed</h4>
+            <span id="complete-status">0</span><br>
+            <span id="complete-per">0</span>%
+        </div>
+        <div class="status-container">
+            <h4>Overall Progress</h4>
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tasks-container">
+        <div class="tasks-container" id="task-container-0">
+            <input type="text" id="task-name-0" placeholder="Task name..." />
+            <input type="text" id="task-dscr-0" placeholder="Task description..." />
+            <input type="date" id="task-deadline-0" />
+            <button id="add-btn-0">Add</button>
+        </div>
+    </section>
+
+    <script  src="static/dashboard_script.js"></script> 
+</body>
+</html>

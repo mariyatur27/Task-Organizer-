@@ -1,0 +1,56 @@
+.centered-content {
+    display: flex;
+    justify-content: center;
+}
+.title{
+    padding-top: 5%;
+    padding-bottom: 2%;
+    font-size: xx-large;
+}
+.tasks-container input[type='text'] {
+    margin-right: 1%;
+    margin-top: 1%;
+    padding: 0.5% 5% 0.5% 0.9%;
+    width: 20%;
+    border-radius: 33px;
+    border: solid 1px black;
+}
+.tasks-container input[type='date'] {
+    margin-right: 1%;
+    padding: 0.5%;
+    border-radius: 33px;
+    border: solid 1px black;
+}
+.tasks-container button {
+    padding: 0.3% 2%;
+    border-radius: 33px;
+    border: solid black 1px;
+    background: black;
+    color: white;
+}
+select {
+    padding: 0.5% 1%;
+    border-radius: 33px;
+}
+.status-container {
+    flex: 0 0 25%;
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+section#status-counter {
+    display: flex;
+    justify-content: center;
+}
+#myProgress {
+    width: 100%;
+    background-color: #e9e9e9;
+    border-radius: 33px;
+}
+  
+#myBar {
+    width: 6%;
+    height: 30px;
+    background-color: green;
+    border-radius: 33px;
+}
