@@ -1,6 +1,9 @@
+const tasks_status = new Object();
+var empty_json =  true;
+
 const buildStartingPage = (id, data) => {
     var id = String(Number(id) + 1);
-    var container = document.getElementById('tasks-container-onload'); 
+    var container = document.getElementById('tasks-container'); 
 
     let task_container = document.createElement('div'); task_container.classList.add('tasks-container'); task_container.id = "task-container-".concat(id);
 
@@ -13,22 +16,55 @@ const buildStartingPage = (id, data) => {
         let task_deadline = document.createElement('input'); task_deadline.type = 'date'; task_deadline.id = 'task-deadline-'.concat(id); task_deadline.value = data[2]
         task_container.appendChild(task_deadline);
 
-        let add_btn = document.createElement('button'); add_btn.innerHTML = 'Add'; add_btn.id = 'add-btn-'.concat(id);
-        task_container.appendChild(add_btn);
+        var status_ar = ["Not Started", "In Progress", "Complete"];
+
+        var selectList = document.createElement('select'); selectList.id = 'status-list-'.concat(id);
+        task_container.appendChild(selectList);
+
+        status_ar.forEach(e => {
+            var option = document.createElement('option'); option.value = e; option.text = e;
+            option.id = 'option-'.concat(id + '-' + e)
+            selectList.appendChild(option)
+        })
+
+        selectList.value = data[3];
+
+        tasks_status[id] = data[3]
+
+        console.log(tasks_status)
+
+        changeStatus(Object.values(tasks_status))
+
+        selectList.onclick = () => {
+            statusUpate(id);
+        }
 
     container.appendChild(task_container);
 
-    activateButton(id);
+    // activateButton(id);
 }
 
 const sortData = (data) => {
     var values = Object.values(data);
     var keys = Object.keys(data)
 
-    for (var i = 0; i < keys.length; i++) {
-        buildStartingPage(keys[i], values[i])
+    if(keys.length != 0){
+        //document.getElementById('tasks-container').style.display = 'none'
+        document.getElementById('task-container-0').style.display = 'none'
+        empty_json = false;
+        for (var i = 0; i < keys.length; i++) {
+            buildStartingPage(keys[i], values[i])
+        }
+        
+        var last_row = document.getElementById('task-container-' + keys.length)
+            let add_btn = document.createElement('button'); add_btn.innerHTML = 'Add'; add_btn.id = 'add-btn-' + keys.length;
+            add_btn.onclick = () => {
+                generateNewRow(keys.length);
+                document.getElementById('add-btn-'.concat(keys.length)).style.display = 'none';
+            }
+        last_row.appendChild(add_btn)
     }
-    
+
 }
 
 
@@ -38,12 +74,13 @@ window.onload = (e) => {
     .then(data => sortData(data))
 }
 
-const sendData = (id, name, dscr, deadline) => {
+const sendData = (id, name, dscr, deadline, status) => {
     var data = {
         id: id,
         name: name,
         dscr: dscr,
         deadline: deadline,
+        status: status
     };
 
     console.log(data)
@@ -71,9 +108,9 @@ const statusUpdateJSON = (data) => {
 
 //status tracker
 const changeStatus = (tasks) => {
-    var inc_num = tasks.filter((x) => x == 'not started').length;
-    var inp_num = tasks.filter((x) => x == 'in progress').length;
-    var com_num = tasks.filter((x) => x == 'complete').length;
+    var inc_num = tasks.filter((x) => x == 'Not Started').length;
+    var inp_num = tasks.filter((x) => x == 'In Progress').length;
+    var com_num = tasks.filter((x) => x == 'Complete').length;
 
     document.getElementById('incomplete-status').innerHTML = inc_num;
     document.getElementById('inprogress-status').innerHTML = inp_num;
@@ -87,18 +124,23 @@ const changeStatus = (tasks) => {
       
 }
 
-const tasks_status = new Object();
-
 //check if something with this id already exists in the object
 const statusUpate = (id) => {
+    var status;
+
     if(document.getElementById('option-'.concat(id + '-' + 'Complete')).selected){
-        tasks_status[id] = 'complete';
+        tasks_status[id] = 'Complete';
+        status = 'Complete';
     }else if(document.getElementById('option-'.concat(id + '-' + 'In Progress')).selected){
-        tasks_status[id] = 'in progress';
+        tasks_status[id] = 'In Progress';
+        status = 'In Progress';
     }else if(document.getElementById('option-'.concat(id + '-' + 'Not Started')).selected){
-        tasks_status[id] = 'not started';
+        tasks_status[id] = 'Not Started';
+        status = 'Not Started';
     }
     changeStatus(Object.values(tasks_status));
+
+    sendData(id, task_name, task_description, task_deadline, status);
 }
 
 const updateAddButton = (id) => {
@@ -133,12 +175,17 @@ const activateButton = (id) => {
         var task_deadline = document.getElementById("task-deadline-".concat(id)).value;
 
         if (task_name != '' && task_description != '' && task_deadline != ''){
-            sendData(id, task_name, task_description, task_deadline);
+            // sendData(id, task_name, task_description, task_deadline);
             updateAddButton(id)
             generateNewRow(id)
-            document.getElementById('incomplete-status').innerHTML = String(Number(id) + 1);
-            document.getElementById('incomlete-per').innerHTML = Math.round((Number(id) + 1 / Object.keys(tasks).length) * 100);
-            document.getElementById('myBar').style.width = Math.round((com_num / Object.keys(tasks).length) * 100) + '%';
+            if (empty_json){
+                document.getElementById('incomplete-status').innerHTML = String(Number(id) + 1);
+                document.getElementById('incomlete-per').innerHTML = Math.round((Number(id) + 1 / Object.keys(tasks_status).length) * 100);
+            }else{
+                document.getElementById('incomplete-status').innerHTML = (Object.values(tasks_status).filter((x) => x == 'Not Started').length);
+                document.getElementById('incomlete-per').innerHTML = Math.round((Object.values(tasks_status).filter((x) => x == 'Not Started').length / Object.keys(tasks_status).length) * 100);
+            }
+            document.getElementById('myBar').style.width = Math.round((Object.values(tasks_status).filter((x) => x == 'Complete').length / Object.keys(tasks_status).length) * 100) + '%';
         }
     })
 }
@@ -175,7 +222,7 @@ document.getElementById('add-btn-0').addEventListener('click', function() {
     var id = "0";
 
     if(task_name != '' && task_dscr != '' && task_deadline != ''){
-        sendData(id, task_name, task_dscr, task_deadline);
+        // sendData(id, task_name, task_dscr, task_deadline);
         generateNewRow(id);
         updateAddButton(id);
         document.getElementById('incomplete-status').innerHTML = String(Number(id) + 1);
