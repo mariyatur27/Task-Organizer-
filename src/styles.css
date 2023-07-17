@@ -54,3 +54,15 @@ section#status-counter {
     background-color: green;
     border-radius: 33px;
 }
+.complete-st{
+    background: #86ff86;
+    border: none;
+}
+.incomplete-st{
+    border: none;
+    background: #fc8686;
+}
+.inprogress-st{
+    border: none;
+    background: #ffcf77;
+}

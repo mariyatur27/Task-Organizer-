@@ -40,9 +40,7 @@ app.get( '/signup', (req, res) => {
                 if(String(password) == user[username]){
                    console.log('redirecting')
 
-                   app.get('/login',(req,res)=>{
-                        res.redirect(301,'/dashboard');
-                    })
+                   res.send('<script>window.location.href="http://localhost:8000/dashboard";</script>');
 
                 }else{
                     console.log('incorrect password')
@@ -125,7 +123,7 @@ app.get( '/signup', (req, res) => {
 app.post('/dashboard', (req, res) => {
     console.log(req.body)
     var info = req.body
-    var task_details = [info.name, info.dscr, info.deadline];
+    var task_details = [info.name, info.dscr, info.deadline, info.status];
 
     console.log(info.id)
     console.log(task_details)

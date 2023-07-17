@@ -8,8 +8,13 @@
     <title>Task Organizer</title>
     <link href="static/styles.css" rel="stylesheet"/>
     <script src='https://cdn.plot.ly/plotly-2.24.1.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/add-to-calendar-button@2" async defer></script>
 </head>
 <body>
+
+    <!-- The person's name will go instead of 'My' -->
+    <section class="centered-content title">My To Do List</section>
+
     <section id="status-counter">
         <div class="status-container">
             <h4>Tasks Not Completed</h4>
@@ -41,7 +46,7 @@
             <input type="text" id="task-name-0" placeholder="Task name..." />
             <input type="text" id="task-dscr-0" placeholder="Task description..." />
             <input type="date" id="task-deadline-0" />
-            <button id="add-btn-0">Add</button>
+            <button id="add-btn-0">+</button>
         </div>
     </section>
 
