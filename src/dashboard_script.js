@@ -1,5 +1,6 @@
 const tasks_status = new Object();
 var empty_json =  true;
+var username
 
 const buildStartingPage = (id, data) => {
     var id = String(Number(id));
@@ -48,10 +49,12 @@ const buildStartingPage = (id, data) => {
 }
 
 const sortData = (data) => {
-    var values = Object.values(data);
-    var keys = Object.keys(data);
+    document.getElementById('page-title').innerHTML = data["name"] + "'s To Do List"
 
-    console.log(keys.length)
+    var tasks = data["tasks"];
+    var values = Object.values(tasks);
+    var keys = Object.keys(tasks);
+    username = data["username"]
 
     if(keys.length != 0){
         //document.getElementById('tasks-container').style.display = 'none'
@@ -78,28 +81,23 @@ const sortData = (data) => {
 window.onload = (e) => {
     fetch('http://localhost:8000/data')
     .then(response => response.json())
-    .then(data => sortData(data))
-}
-
-window.onload = (e) => {
-    fetch('http://localhost:8000/login')
-    .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => sortData(data)) //sortData(data)
 }
 
 const sendData = (id, name, dscr, deadline, status) => {
-    // if (empty_json){
-    //     id = id
-    // }else{
-    //     id = id-1
-    // }
+
+    //we need to find a way to fit the username here
+
     var data = {
+        username: username,
         id: id,
         name: name,
         dscr: dscr,
         deadline: deadline,
         status: status
     };
+
+    console.log(data)
 
     fetch("/dashboard", {
         method: "POST",
@@ -166,19 +164,19 @@ const statusUpate = (id, name, description, deadline) => {
     }
 }
 
-const addToCalendar = (id, name, deadline, description) => {
-    console.log(id, name, deadline)
-    let row = document.getElementById('task-container-' + id);
+// const addToCalendar = (id, name, deadline, description) => {
+//     console.log(id, name, deadline)
+//     let row = document.getElementById('task-container-' + id);
 
-    var calendarBtn = document.createElement('add-to-calendar-button'); calendarBtn.id = 'calendar-btn-' + id;
-        calendarBtn.setAttribute('name', name);
-        calendarBtn.setAttribute('startDate', deadline);
-        calendarBtn.setAttribute('description', description);
-        calendarBtn.setAttribute('options', ['Google']);
-        calendarBtn.setAttribute('optionName', 'true');
+//     var calendarBtn = document.createElement('add-to-calendar-button'); calendarBtn.id = 'calendar-btn-' + id;
+//         calendarBtn.setAttribute('name', name);
+//         calendarBtn.setAttribute('startDate', deadline);
+//         calendarBtn.setAttribute('description', description);
+//         calendarBtn.setAttribute('options', ['Google']);
+//         calendarBtn.setAttribute('optionName', 'true');
 
-    row.appendChild(calendarBtn)
-}
+//     row.appendChild(calendarBtn)
+// }
 
 const updateAddButton = (id, name, description, deadline) => {
     console.log(id)
@@ -204,7 +202,7 @@ const updateAddButton = (id, name, description, deadline) => {
     }
     
     //add to calendar button
-    addToCalendar(id, name, deadline, description)
+    // addToCalendar(id, name, deadline, description)
 }
 
 const activateButton = (id) => {
@@ -280,4 +278,8 @@ document.getElementById('add-btn-0').addEventListener('click', function() {
         document.getElementById('myBar').style.width = '6%'
     }
 
+})
+
+document.getElementById('logout-btn').addEventListener('click', function() {
+    window.location.assign("http://localhost:8000/login");
 })

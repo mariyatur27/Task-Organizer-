@@ -9,30 +9,34 @@
     <link href="static/styles.css" rel="stylesheet"/>
     <script src='https://cdn.plot.ly/plotly-2.24.1.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/add-to-calendar-button@2" async defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Rubik&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- The person's name will go instead of 'My' -->
-    <section class="centered-content title">My To Do List</section>
+    <section class="navbar"><button id="logout-btn">Log Out</button></section>
+
+    <section class="centered-content title" id="page-title"></section>
 
     <section id="status-counter">
         <div class="status-container">
-            <h4>Tasks Not Completed</h4>
-            <span id="incomplete-status">0</span><br>
-            <span id="incomlete-per">0</span>%
+            <h4>Tasks Not Completed ⏳</h4>
+            Amount: <span id="incomplete-status">0</span><br>
+            Portion: <span id="incomlete-per">0</span>%
         </div>
         <div class="status-container">
-            <h4>Tasks In Progress</h4>
-            <span id="inprogress-status">0</span><br>
-            <span id="inprogress-per">0</span>%
+            <h4>Tasks In Progress ⚙️</h4>
+            Amount: <span id="inprogress-status">0</span><br>
+            Portion: <span id="inprogress-per">0</span>%
         </div>
         <div class="status-container">
-            <h4>Tasks Completed</h4>
-            <span id="complete-status">0</span><br>
-            <span id="complete-per">0</span>%
+            <h4>Tasks Completed ✅</h4>
+            Amount: <span id="complete-status">0</span><br>
+            Portion: <span id="complete-per">0</span>%
         </div>
         <div class="status-container">
-            <h4>Overall Progress</h4>
+            <h4>Overall Progress 🧮</h4>
             <div id="myProgress">
                 <div id="myBar"></div>
             </div>

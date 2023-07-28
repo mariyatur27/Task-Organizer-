@@ -7,8 +7,8 @@ app.use(cors())
 const fs = require('fs');
 app.use(express.json())
 
-var data = fs.readFileSync('tasks.json');
-var tasks = JSON.parse(data);
+var data = fs.readFileSync('users.json');
+var users = JSON.parse(data);
 
 var user_data = fs.readFileSync('users.json');
 var users = JSON.parse(user_data);
@@ -21,6 +21,15 @@ app.get( '/login', (req, res) => {
 app.get( '/signup', (req, res) => {
     res.sendFile("signup.html", { root: __dirname });
  })
+
+const sendMessage = (message) => {
+  app.get('/login', (req, res) => {
+    console.log(message + '!!!!')
+    const data = {"message": message}
+    const json = data.json();
+    res.json(json)
+  })
+}
 
  app.post('/login', (req, res, next) => {
     fs.readFile("users.json", "utf8", (err, jsonString) => {
@@ -37,12 +46,13 @@ app.get( '/signup', (req, res) => {
             const user = JSON.parse(jsonString);
 
             if (username in user){
-                if(String(password) == user[username]){
+                if(String(password) == user[username].password){
                    console.log('redirecting')
+                   res.redirect('/dashboard')
 
-                   app.get('/login', (req, res) => {
+                   app.get('/data', (req, res) => {
                     fs.readFile("users.json", "utf8", (err, jsonString) => {
-                                
+                
                         if (err) {
                           console.log("File read failed:", err);
                           return;
@@ -50,18 +60,16 @@ app.get( '/signup', (req, res) => {
                         try {
                 
                             const modified_data = JSON.parse(jsonString);
-                            console.log(modified_data);
-                            res.json(modified_data)
+                            console.log(modified_data[username]);
+                            res.json(modified_data[username])
                 
                           } catch (err) {
                             console.log("Error parsing JSON string:", err);
                           }
                       });
                  })
-
-
                 }else{
-                    console.log('incorrect password')
+                  console.log('incorrect password')
                 }
             }else{
                 console.log('doesnt exists')
@@ -76,6 +84,7 @@ app.get( '/signup', (req, res) => {
  app.post('/signup', (req, res, next) => {
     fs.readFile("users.json", "utf8", (err, jsonString) => {
 
+        var name = req.body.name
         var username = req.body.username
         var password = req.body.password
         var password_confirmation = req.body.password_confirmation
@@ -92,7 +101,12 @@ app.get( '/signup', (req, res) => {
                 if (username in user){
                     console.log('This account already exists')
                 }else{
-                    users[username] = password;
+                    users[username] = {
+                      "password": password,
+                      "name": name,
+                      "username": username,
+                      "tasks": {}
+                    };
                     var user_data = JSON.stringify(users);
                 
                     fs.writeFileSync('users.json', user_data)
@@ -113,40 +127,22 @@ app.get( '/signup', (req, res) => {
     res.sendFile("main.html", { root: __dirname });
  })
 
- app.get('/data', (req, res) => {
-    fs.readFile("tasks.json", "utf8", (err, jsonString) => {
-
-        var data = req.body
-
-        if (err) {
-          console.log("File read failed:", err);
-          return;
-        }
-        try {
-
-            const modified_data = JSON.parse(jsonString);
-            console.log(modified_data);
-            res.json(modified_data)
-
-          } catch (err) {
-            console.log("Error parsing JSON string:", err);
-          }
-      });
- })
-
 
 app.post('/dashboard', (req, res) => {
     console.log(req.body)
     var info = req.body
+    var user = info.username
     var task_details = [info.name, info.dscr, info.deadline, info.status];
 
     console.log(info.id)
     console.log(task_details)
+    console.log(users[user].tasks)
 
+    var tasks = users[user].tasks
     tasks[info.id] = task_details;
-    var data = JSON.stringify(tasks);
+    var data = JSON.stringify(users); 
   
-    fs.writeFileSync('tasks.json', data)
+    fs.writeFileSync('users.json', data)
 })
 
 

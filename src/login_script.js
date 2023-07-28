@@ -16,6 +16,11 @@ document.getElementById('login_btn').addEventListener('click', function() {
             },
             body: JSON.stringify(user_data)
         })
+
+    fetch('http://localhost:8000/login')
+    .then(response => console.log(response))
+    .then(data => console.log(data))
+
     }else{
         alert('Make sure to input all the data!')
     }

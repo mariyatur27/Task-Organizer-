@@ -33,10 +33,12 @@ select {
     border-radius: 33px;
 }
 .status-container {
-    flex: 0 0 25%;
+    flex: 0 0 20%;
     text-align: center;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin: 1%;
+    border-radius: 18px;
+    padding: 1%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 section#status-counter {
     display: flex;
@@ -65,4 +67,43 @@ section#status-counter {
 .inprogress-st{
     border: none;
     background: #ffcf77;
+}
+body{
+    font-family: 'Inter', sans-serif;
+    font-family: 'Rubik', sans-serif;
+}
+section.navbar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2%;
+}
+button#logout-btn {
+    padding: 0.3% 1%;
+    border-radius: 33px;
+    color: white;
+    background: black;
+    font-size: small;
+    cursor: pointer;
+}
+.login_signup_container input {
+    border: none;
+    width: 100%;
+    padding: 5%;
+    margin-bottom: 5%;
+    border-radius: 33px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+#login_btn , #signup_btn {
+    margin-top: 10%;
+    margin-bottom: 3%;
+    padding: 2% 10%;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+#sign_up_btn , #log_in_btn{
+    text-decoration: underline;
+    font-size: small;
+    cursor: pointer;
 }
