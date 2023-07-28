@@ -40,7 +40,25 @@ app.get( '/signup', (req, res) => {
                 if(String(password) == user[username]){
                    console.log('redirecting')
 
-                   res.send('<script>window.location.href="http://localhost:8000/dashboard";</script>');
+                   app.get('/login', (req, res) => {
+                    fs.readFile("users.json", "utf8", (err, jsonString) => {
+                                
+                        if (err) {
+                          console.log("File read failed:", err);
+                          return;
+                        }
+                        try {
+                
+                            const modified_data = JSON.parse(jsonString);
+                            console.log(modified_data);
+                            res.json(modified_data)
+                
+                          } catch (err) {
+                            console.log("Error parsing JSON string:", err);
+                          }
+                      });
+                 })
+
 
                 }else{
                     console.log('incorrect password')
@@ -53,7 +71,6 @@ app.get( '/signup', (req, res) => {
             console.log("Error parsing JSON string:", err);
           }
       });
-
  })
 
  app.post('/signup', (req, res, next) => {
@@ -110,8 +127,6 @@ app.get( '/signup', (req, res) => {
             const modified_data = JSON.parse(jsonString);
             console.log(modified_data);
             res.json(modified_data)
-            // res.setHeader('Content-Type', 'application/json');
-            // res.send(modified_data)
 
           } catch (err) {
             console.log("Error parsing JSON string:", err);

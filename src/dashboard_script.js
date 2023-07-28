@@ -81,6 +81,12 @@ window.onload = (e) => {
     .then(data => sortData(data))
 }
 
+window.onload = (e) => {
+    fetch('http://localhost:8000/login')
+    .then(response => response.json())
+    .then(data => console.log(data))
+}
+
 const sendData = (id, name, dscr, deadline, status) => {
     // if (empty_json){
     //     id = id
